@@ -14,7 +14,7 @@ public class ImplementSOD implements IServiceOfDepartment {
 
     @Autowired
     private IDepartmentRepository dr;
-    
+
     @Override
     public List<Department> searchAllDepartment() {
         return dr.searchAllDepartment();

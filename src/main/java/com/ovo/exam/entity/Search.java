@@ -12,9 +12,9 @@ public class Search {
 
     private Integer sDeptId; // 查询时部门编号
     private Integer sStatusCode; // 查询时考勤状态代码
-    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date sStartDate; // 查询时的开始修改日期
-    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date sEndDate; // 查询时的结束修改日期
 
     public Integer getsDeptId() {

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class ViewController {
-    
+
     @RequestMapping("/login")
     public String toLogin() {
         return "login";
@@ -15,12 +15,12 @@ public class ViewController {
     public String toIndex() {
         return "index";
     }
-    
+
     @RequestMapping("/add")
     public String toAdd() {
         return "add";
     }
-    
+
     @RequestMapping("/update")
     public String toUpdate() {
         return "update";

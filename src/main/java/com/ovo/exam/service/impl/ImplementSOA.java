@@ -17,17 +17,18 @@ public class ImplementSOA implements IServiceOfAttendanceInfo {
 
     @Autowired
     private IAttendanceInfoRepository air;
-    
+
     @Override
     public int addAttendanceInfo(AttendanceInfo aInfo) {
         return air.addAttendanceInfo(aInfo);
     }
 
     @Override
-    public int deleteAttendanceInfo(String[] ids) {int flag = 1;
+    public int deleteAttendanceInfo(String[] ids) {
+        int flag = 1;
         for (String id : ids) {
             int num = air.deleteAttendanceInfo(new Integer(id));
-            if(num == 0) {
+            if (num == 0) {
                 flag = 0;
                 break;
             }

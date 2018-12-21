@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 public class AttendanceStatus {
 
-    private Integer attendStatusId; //考勤状态编号
-    private String status;  //状态名称
-    private Integer statusCode; //状态代码
+    private Integer attendStatusId; // 考勤状态编号
+    private String status; // 状态名称
+    private Integer statusCode; // 状态代码
 
     public Integer getAttendStatusId() {
         return attendStatusId;

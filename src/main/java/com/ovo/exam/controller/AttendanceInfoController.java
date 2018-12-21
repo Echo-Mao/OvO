@@ -21,16 +21,16 @@ import com.ovo.exam.service.IServiceOfEmployee;
 
 @Controller
 public class AttendanceInfoController {
-    
+
     @Autowired
     private IServiceOfAttendanceInfo soa;
-    
+
     @Autowired
     private IServiceOfDepartment sod;
-    
+
     @Autowired
     private IServiceOfEmployee soe;
-    
+
     @RequestMapping("/toInfoList.action")
     public ModelAndView toInfoList(Paging paging, HttpSession session) {
         ModelAndView mv = new ModelAndView();
@@ -46,7 +46,7 @@ public class AttendanceInfoController {
         mv.setViewName("index");
         return mv;
     }
-    
+
     @RequestMapping("/addInfo.action")
     public ModelAndView addInfo(AttendanceInfo info) {
         ModelAndView mv = new ModelAndView();
@@ -60,7 +60,7 @@ public class AttendanceInfoController {
         }
         return null;
     }
-    
+
     @RequestMapping("/deleteInfo.action")
     public ModelAndView deleteInfo(String[] ids) {
         ModelAndView mv = new ModelAndView();
@@ -72,7 +72,7 @@ public class AttendanceInfoController {
         }
         return null;
     }
-    
+
     @RequestMapping("/updateStatus.action")
     public ModelAndView updateStatus(AttendanceInfo updateInfo) {
         ModelAndView mv = new ModelAndView();
@@ -84,7 +84,7 @@ public class AttendanceInfoController {
         }
         return null;
     }
-    
+
     @RequestMapping("/toUpdateStatus.action")
     public ModelAndView toUpdateStatus(AttendanceInfo info) {
         ModelAndView mv = new ModelAndView();

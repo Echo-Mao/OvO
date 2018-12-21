@@ -15,13 +15,13 @@ import com.ovo.exam.service.IServiceOfEmployee;
 
 @Controller
 public class EmployeeController {
-    
+
     @Autowired
     private IServiceOfEmployee soe;
-    
+
     @RequestMapping("/login.action")
     @ResponseBody
-    public Map<String, Object> login(Employee loginInfo, HttpSession session){
+    public Map<String, Object> login(Employee loginInfo, HttpSession session) {
         Map<String, Object> json = new HashMap<>();
         System.out.println(loginInfo);
         loginInfo = soe.login(loginInfo);

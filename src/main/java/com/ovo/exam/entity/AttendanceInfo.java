@@ -15,9 +15,9 @@ public class AttendanceInfo {
     private Integer asCode; // 状态代码
     private Employee employee; // 通过empid查找与该条记录挂钩的员工信息
     private AttendanceStatus attendStatus; // 通过asid查找与该条信息挂钩的状态信息
-    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date recordTime; // 第一次写入的时间
-    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date updateTime; // 最后一次修改的时间
     private Integer isDelete; // 是否删除? 1为否,0为是
 

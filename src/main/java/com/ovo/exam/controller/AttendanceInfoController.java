@@ -51,7 +51,6 @@ public class AttendanceInfoController {
     public ModelAndView addInfo(AttendanceInfo info) {
         ModelAndView mv = new ModelAndView();
         Date now = new Date();
-        System.out.println(info);
         info.setRecordTime(now);
         info.setUpdateTime(now);
         int flag = soa.addAttendanceInfo(info);
@@ -77,7 +76,6 @@ public class AttendanceInfoController {
     @RequestMapping("/updateStatus.action")
     public ModelAndView updateStatus(AttendanceInfo updateInfo) {
         ModelAndView mv = new ModelAndView();
-        System.out.println(updateInfo);
         updateInfo.setUpdateTime(new Date());
         int flag = soa.updateAttendanceInfo(updateInfo);
         if (flag > 0) {
@@ -92,7 +90,6 @@ public class AttendanceInfoController {
         ModelAndView mv = new ModelAndView();
         int id = info.getAttendInfoId();
         AttendanceInfo updateInfo = soa.searchAttendanceInfoById(id);
-        System.out.println(updateInfo);
         mv.addObject("updateInfo", updateInfo);
         mv.setViewName("update");
         return mv;

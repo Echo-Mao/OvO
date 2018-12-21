@@ -57,6 +57,7 @@
                 </if>
             </if>
             AND ISDELETE = 1
+            ORDER BY AI.UPDATETIME DESC
         </where>
         )t) where r>#{rowStart} and r <![CDATA[<=]]> #{rowEnd}
     </select>

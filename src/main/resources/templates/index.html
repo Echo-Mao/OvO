@@ -142,13 +142,13 @@ table {
                         <td class="hid" th:style="${session.loginInfo.power == 1} ? 'display:table-cell;' : 'display:none;'">
                             <a th:href="@{'/toUpdateStatus.action?attendInfoId='+*{info.attendInfoId}}">修改</a>
                             &nbsp;&nbsp;&nbsp;
-                            <a th:href="@{'/deleteInfo.action?ids='+*{info.attendInfoId}}" onclick="return confirm('即将删除该条书籍信息,您确定吗?')">刪除</a>
+                            <a th:href="@{'/deleteInfo.action?ids='+*{info.attendInfoId}}" onclick="return confirm('即将删除该条考勤信息,您确定吗?')">刪除</a>
                         </td>
                     </tr>
                     <tr align="center">
                         <td colspan="9">
                             <input type="hidden" id="pagesCount" th:value="${paging.pagesCount}" />
-                            <input type="button" id="deleteRecord" name="deleteRecord" th:style="${session.loginInfo.power == 1} ? 'display:inline-block;' : 'display:none;'" onclick="return confirm('即将删除选中的书籍信息,您确定吗?')" value="批量删除" />
+                            <input type="button" id="deleteRecord" name="deleteRecord" th:style="${session.loginInfo.power == 1} ? 'display:inline-block;' : 'display:none;'" onclick="return confirm('即将删除选中的考勤信息,您确定吗?')" value="批量删除" />
                             <a href="/add"><input type="button" th:style="${session.loginInfo.power == 1} ? 'display:inline-block;' : 'display:none;'" name="addAttendance" value="考勤登记" id="addAttendance" /></a>
                                 共<span th:text="${paging.rowsCount}">x</span>条记录&nbsp;&nbsp;
                                 每页<input type="text" id="pageSize" name="pageSize" th:value="${paging.rows}" size="2" />

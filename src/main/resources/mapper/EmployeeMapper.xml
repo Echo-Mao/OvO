@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ovo.exam.repository.IEmployeeRepository">
+    <resultMap type="employee" id="employeeWithTable">
+        <id property="empId" column="E_ID"/>
+        <result property="empName" column="EMPNAME"/>
+        <result property="empPwd" column="EMPPWD"/>
+        <result property="deptId" column="DEPTID"/>
+        <result property="power" column="POWER"/>
+        <association property="department" column="DEPTID" javaType="department"
+            select="com.ovo.exam.repository.IDepartmentRepository.searchDepartmentById"></association>
+    </resultMap>
+    <select id="searchAllEmp" resultMap="employeeWithTable">
+        SELECT * FROM TB_EMP
+    </select>
+    <select id="login" parameterType="employee" resultMap="employeeWithTable">
+        SELECT * FROM TB_EMP WHERE EMPNAME=#{empName} AND EMPPWD=#{empPwd}
+    </select>
+    <select id="searchEmployeeById" parameterType="int" resultMap="employeeWithTable">
+        SELECT * FROM TB_EMP WHERE E_ID=#{empId}
+    </select>
+</mapper>

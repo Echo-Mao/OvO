@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Update Book Info</title>
+<script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="../js/My97DatePicker/WdatePicker.js"></script>
+<style type="text/css">
+    header {
+        width: 100%;
+        font-size: 24px;
+        color: #999;}
+    #main div{
+        width: 75px;
+        display: inline-block;
+        line-height: 35px;}
+</style>
+</head>
+<body>
+    <div id="page">
+        <header>>>修改书籍信息<hr /></header>
+        <div id="main">
+            <form action="/updateStatus.action" method="post">
+                <input name="attendInfoId" type="hidden" th:value="${updateInfo.attendInfoId}" />
+                <input name="empId" type="hidden" th:value="${updateInfo.employee.empId}" />
+                <div>职员姓名:</div><input type="text" th:value="${updateInfo.employee.empName}" readonly="readonly" /><br />
+                <div>考勤状态:</div><select name="asCode" th:field="${updateInfo.asCode}">
+                    <option value="">--请选择--</option>
+                    <option th:each="stat : ${session.statuses}" th:value="*{stat.statusCode}" th:text="*{stat.status}">status</option>
+                </select><br />
+                <div>所属部门:</div><input name="employee.department.deptName" type="text" th:value="${updateInfo.employee.department.deptName}" readonly="readonly" /><br />
+                <div>记录时间:</div><input name="updateDate" type="text" readonly="readonly" th:value="${#dates.format(updateInfo.updateTime,'yyyy-MM-dd hh:mm:ss')}" /><br />
+                <input id="submitButton" type="submit" value="提交" />
+            </form>
+        </div>
+        <footer></footer>
+    </div>
+</body>
+</html>

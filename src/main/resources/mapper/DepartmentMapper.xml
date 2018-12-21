@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ovo.exam.repository.IDepartmentRepository">
+    <resultMap type="department" id="departmentWithTable">
+        <id property="deptId" column="D_ID"/>
+        <result property="deptName" column="DEPTNAME"/>
+    </resultMap>
+    <select id="searchAllDepartment" resultMap="departmentWithTable">
+        SELECT * FROM TB_DEPT
+    </select>
+    <select id="searchDepartmentById" parameterType="int" resultMap="departmentWithTable">
+        SELECT * FROM TB_DEPT WHERE D_ID=#{deptId}
+    </select>
+</mapper>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Index</title>
+<script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="../js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+	//全选,并将ids的值赋值进数组
+	function checkAllBox(obj) {
+	    var subChecks = document.getElementsByName("ids");
+	    for (var i = 0; i < subChecks.length; i++) {
+	        subChecks[i].checked = obj.checked;
+	    }
+	}
+
+    //发送页面显示请求到后台
+    function sendService(num){
+       var rows = $("#pageSize").val();
+       var deptId = $("#sDeptId").val();
+       var statusCode = $("#sStatusCode").val();
+       var startDate = $("#sStartDate").val();
+       var endDate = $("#sEndDate").val();
+       location.href="/toInfoList.action?page="+num+"&rows="+rows+
+               "&search.sDeptId="+deptId+"&search.sStatusCode="+statusCode+
+               "&search.sStartDate="+startDate+"&search.sEndDate="+endDate;
+    }
+    
+    //上/下一页
+    function  getPage(num){
+      var pagesCount =  $("#pagesCount").val();
+       if(num <=0 || num > pagesCount){
+           alert("超出页数范围！！");
+           return;
+         }
+       sendService(num);
+    }
+    
+	$(function() {
+	    
+	    //可更改的每页显示的记录条数
+	    $("#pageSize").change(function(){
+	        var rows = $(this).val();
+	        var regexp = /^[1-9]\d*$/;
+	        if(!regexp.test(rows)){
+	            $(this).val(4);
+	        }
+	        sendService(1);
+	    });
+	    
+	    //跳转至某页
+	    $("#pageIndex").change(function(){
+	        var regexp = /^[1-9]\d*$/;
+	        var pageIndex = $("#pageIndex").val();
+	        var pagesCount =  $("#pagesCount").val();
+	        if(!regexp.test(pageIndex)){
+	            $(this).val(1);
+	        }else if(parseInt(pageIndex) > parseInt(pagesCount) ){ //输入的页码超出最大页码，设置最大页码
+	            $(this).val(pagesCount);
+	        }  
+	    });
+	    
+	    //跳转信号
+	    $("#goButton").click(function(){
+	        var pageIndex = $("#pageIndex").val();
+	        sendService(pageIndex);
+	    });
+	    
+	    //批量删除时获取被选中记录的id数组,并跳转至删除模块
+	    $("#deleteInfo").click(function(){
+	        var arr=[];
+	        $("input[name='ids']:checked").each(function(){
+	            arr.push($(this).val());
+	        });
+	        if(arr.length > 0){
+	            location.href="/deleteInfo.action?ids="+arr;
+	        } else {
+	            alert("错误 - 013 : 删除失败!未选中任何记录!");
+	        }
+	    });
+	    
+	});
+</script>
+<style type="text/css">
+.hid {
+    display : none;}
+table {
+    width: 1000px;
+    text-align: center;}
+#logOut {
+    float: right;}
+#page {
+    width: 1000px;
+    margin: 0 auto;}
+</style>
+</head>
+<body>
+    <div id="page">
+        <header></header>
+        <div id="main">
+            <div align="center">
+                <p>欢迎
+                    &nbsp;<font size="4em" th:text="${session.loginInfo.power == 1} ? '管理员' : '用户'"></font>
+                    &nbsp;<font size="5em" th:text="${session.loginInfo.empName}">empName</font>
+                    <span id="logOut"><a href="/login">退出登录</a></span>
+                </p>
+            </div>
+            <div align="center">
+                <form action="/toInfoList.action" method="post">
+                    部门编号:<select id="sDeptId" name="search.sDeptId">
+                        <option value="">--请选择--</option>
+                        <option th:each="dept : ${session.departments}" th:value="*{dept.deptId}" th:text="*{dept.deptName}" th:selected="*{dept.deptId eq paging?.search?.sDeptId}">部门编号</option>
+                    </select>
+                    考勤状态:<select id="sStatusCode" name="search.sStatusCode">
+                        <option value="">--请选择--</option>
+                        <option th:each="stat : ${session.statuses}" th:value="*{stat.statusCode}" th:text="*{stat.status}" th:selected="*{stat.statusCode eq paging?.search?.sStatusCode}">考勤状态码</option>
+                    </select>
+                    时间区间:<input type="text" id="sStartDate" name="search.sStartDate" class="Wdate" onclick="WdatePicker()" readonly="readonly" placeholder="请选择开始时间" th:value="${#dates.format(paging?.search?.sStartDate,'yyyy-MM-dd')}" />
+                    --
+                    <input type="text" id="sEndDate" name="search.sEndDate" class="Wdate" onclick="WdatePicker()" readonly="readonly" placeholder="请选择结束时间" th:value="${#dates.format(paging?.search?.sEndDate,'yyyy-MM-dd')}" />
+                    &nbsp;&nbsp;
+                    <input type="submit" id="searchInfo" value="搜索" />
+                </form>
+            </div>
+            <p />
+            <div id="mainTable" align="center">
+                <table border="1" cellspacing="0">
+                    <tr align="center">
+                        <td class="hid" th:style="${session.loginInfo.power == 1} ? 'display:table-cell;' : 'display:none;'"><input type="checkbox" id="allCheck" onclick="checkAllBox(this)" />全选</td>
+                        <td>职员姓名</td>
+                        <td>考勤状态</td>
+                        <td>所属部门</td>
+                        <td>记录时间</td>
+                        <td class="hid" th:style="${session.loginInfo.power == 1} ? 'display:table-cell;' : 'display:none;'">操作</td>
+                    </tr>
+                    <tr th:each="info : ${infos}">
+                        <td align="center" class="hid" th:style="${session.loginInfo.power == 1} ? 'display:table-cell;' : 'display:none;'"><input type="checkbox" name="ids" th:value="*{info.attendInfoId}" /></td>
+                        <td th:text="*{info.employee.empName}">职员姓名</td>
+                        <td th:text="*{info.attendStatus.status}">考勤状态</td>
+                        <td th:text="*{info.employee.department.deptName}">所属部门</td>
+                        <td th:text="*{#dates.format(info.updateTime,'yyyy-MM-dd HH:mm:ss')}">记录时间</td>
+                        <td class="hid" th:style="${session.loginInfo.power == 1} ? 'display:table-cell;' : 'display:none;'">
+                            <a th:href="@{'/toUpdateStatus.action?attendInfoId='+*{info.attendInfoId}}">修改</a>
+                            &nbsp;&nbsp;&nbsp;
+                            <a th:href="@{'/deleteInfo.action?ids='+*{info.attendInfoId}}" onclick="return confirm('即将删除该条书籍信息,您确定吗?')">刪除</a>
+                        </td>
+                    </tr>
+                    <tr align="center">
+                        <td colspan="9">
+                            <input type="hidden" id="pagesCount" th:value="${paging.pagesCount}" />
+                            <input type="button" id="deleteRecord" name="deleteRecord" th:style="${session.loginInfo.power == 1} ? 'display:inline-block;' : 'display:none;'" onclick="return confirm('即将删除选中的书籍信息,您确定吗?')" value="批量删除" />
+                            <a href="/add"><input type="button" th:style="${session.loginInfo.power == 1} ? 'display:inline-block;' : 'display:none;'" name="addAttendance" value="考勤登记" id="addAttendance" /></a>
+                                共<span th:text="${paging.rowsCount}">x</span>条记录&nbsp;&nbsp;
+                                每页<input type="text" id="pageSize" name="pageSize" th:value="${paging.rows}" size="2" />
+                                条 第<span th:text="${paging.page}">x</span>页/共<span id="pagesCount" th:text="${paging.pagesCount}">x</span>页&nbsp;&nbsp;
+                            <a th:href="@{'/toInfoList.action?page=1'+'&rows='+${paging.rows}}">首页</a>
+                            &nbsp;&nbsp;
+                            <a href="javaScript:void(0);" th:onclick="'javascript:getPage('+${paging.page-1}+')'">上一页</a>
+                            &nbsp;&nbsp; 
+                            <a href="javaScript:void(0);" th:onclick="'javascript:getPage('+${paging.page+1}+')'">下一页</a>
+                            &nbsp;&nbsp;
+                            <a th:href="@{'/toInfoList.action?page='+${paging.pagesCount}+'&rows='+${paging.rows}}">末页</a>
+                            &nbsp;&nbsp;
+                                跳转到<input type="text" id="pageIndex" name="pageIndex" th:value="${paging.page}" size="2" />页
+                            &nbsp;&nbsp;
+                            <input type="button" value="go" id="goButton" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <footer></footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ovo.exam.repository.IAttendanceInfoRepository">
+    <resultMap type="attendanceInfo" id="attendanceInfoWithTable">
+        <id property="attendInfoId" column="AI_ID"/>
+        <result property="empId" column="E_ID"/>
+        <result property="asCode" column="AS_NUM"/>
+        <result property="recordTime" column="RECORDTIME"/>
+        <result property="updateTime" column="UPDATETIME"/>
+        <result property="isDelete" column="ISDELETE"/>
+        <association property="employee" column="E_ID" javaType="employee"
+            select="com.ovo.exam.repository.IEmployeeRepository.searchEmployeeById"></association>
+        <association property="attendStatus" column="AS_NUM" javaType="attendanceStatus"
+            select="com.ovo.exam.repository.IAttendanceStatusRepository.searchStatusByNum"></association>
+    </resultMap>
+    <insert id="addAttendanceInfo" parameterType="attendanceInfo">
+        INSERT INTO TB_ATTENDANCE_INFO(E_ID, AS_NUM, RECORDTIME, UPDATETIME, ISDELETE)
+            VALUES(#{empId}, #{asCode}, #{recordTime}, #{updateTime}, 1)
+    </insert>
+    <update id="deleteAttendanceInfo" parameterType="int">
+        UPDATE TB_ATTENDANCE_INFO SET ISDELETE=0
+            WHERE AI_ID=#{id}
+    </update>
+    <update id="updateAttendanceInfo" parameterType="attendanceInfo">
+        UPDATE TB_ATTENDANCE_INFO
+            SET AS_NUM=#{asCode}, UPDATETIME=#{updateTime}
+            WHERE AI_ID=#{attendInfoId}
+    </update>
+    <select id="searchAllAttendanceStatus" resultMap="com.ovo.exam.repository.IAttendanceStatusRepository.attendanceStatusWithTable">
+        SELECT * FROM TB_ATTENDANCE_STATUS
+    </select>
+    <select id="searchAllAttendanceInfo" resultMap="attendanceInfoWithTable">
+        SELECT AI_ID,E_ID,AS_NUM,RECORDTIME,UPDATETIME FROM TB_ATTENDANCE_INFO
+            WHERE ISDELETE=1
+    </select>
+    <select id="searchAttendanceInfoById" parameterType="int" resultMap="attendanceInfoWithTable">
+        SELECT AI_ID,E_ID,AS_NUM,RECORDTIME,UPDATETIME FROM TB_ATTENDANCE_INFO
+            WHERE AI_ID=#{attendInfoId} AND ISDELETE=1
+    </select>
+    <select id="searchAttendanceInfoByPaging" parameterType="paging" resultMap="attendanceInfoWithTable">
+        select * from (select t.*,rownum r from (select AI.* from TB_ATTENDANCE_INFO AI, TB_EMP E
+        <where>
+            AND AI.E_ID = E.E_ID
+            <if test="_parameter.search!=null">
+                <if test="_parameter.search.sDeptId>0">
+                    and E.DEPTID = #{search.sDeptId}
+                </if>
+                <if test="_parameter.search.sStatusCode>0">
+                    and AI.AS_NUM = #{search.sStatusCode}
+                </if>
+                <if test="_parameter.search.sStartDate!=null">
+                    and UPDATETIME > #{search.sStartDate}
+                </if>
+                <if test="_parameter.search.sEndDate!=null">
+                    and UPDATETIME <![CDATA[<]]> #{search.sEndDate}
+                </if>
+            </if>
+            AND ISDELETE = 1
+        </where>
+        )t) where r>#{rowStart} and r <![CDATA[<=]]> #{rowEnd}
+    </select>
+    <select id="searchRowsCount" parameterType="search" resultType="int">
+        select count(*) from TB_ATTENDANCE_INFO AI, TB_EMP E
+        <where>
+            AND AI.E_ID = E.E_ID
+            <if test="_parameter!=null">
+                <if test="_parameter.sDeptId>0">
+                    and E.DEPTID = #{sDeptId}
+                </if>
+                <if test="_parameter.sStatusCode>0">
+                    and AI.AS_NUM = #{sStatusCode}
+                </if>
+                <if test="_parameter.sStartDate!=null">
+                    and UPDATETIME > #{sStartDate}
+                </if>
+                <if test="_parameter.sEndDate!=null">
+                    and UPDATETIME <![CDATA[<]]> #{sEndDate}
+                </if>
+            </if>
+            AND ISDELETE = 1
+        </where>
+    </select>
+</mapper>

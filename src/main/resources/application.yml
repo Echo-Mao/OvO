@@ -1,0 +1,43 @@
+#tomcat start
+server:
+  port: 8080
+#tomcat end
+
+#spring configuration start
+spring:
+  #datasource start
+  datasource:
+        type: com.zaxxer.hikari.HikariDataSource
+        driverClassName: oracle.jdbc.driver.OracleDriver
+        url: jdbc:oracle:thin:@localhost:1521:orcl
+        username: Echo_Mao
+        password: orcl
+        hikari:
+          minimum-idle: 5
+          maximum-pool-size: 15
+          auto-commit: true
+          idle-timeout: 30000
+          pool-name: DatebookHikariCP
+          max-lifetime: 1800000
+          connection-timeout: 30000
+          connection-test-query: select * from dual
+  #datasource end
+  #thymeleaf start
+  thymeleaf:
+    mode: HTML
+    encoding: UTF-8
+    prefix: classpath:/templates/
+    suffix: .html
+    #开发时关闭缓存,不然没法看到实时页面
+    cache: false
+    servlet:
+      content-type: text/html
+  #thymeleaf end
+#spring configuration end
+
+#mybatis start
+mybatis:
+  type-aliases-package: com.ovo.exam.entity
+  mapper-locations: classpath:mapper/*Mapper.xml
+#mybatis end
+  

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+<script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
+<script type="text/javascript">
+    $(function() {
+    	$("#loginButton").click(function() {
+    		$.ajax({
+    			url : "/login.action",
+    			type : "post",
+    			dataType : "json",
+    			data : {
+    				"empName" : $("#empName").val(),
+                    "empPwd" : $("#empPwd").val()
+    			},
+    			success : function(rs){
+    				if (rs.message) {
+    				    location.href = "/toInfoList.action";
+    				} else {
+    					$("#checkMessage").html("用户名或密码错误!");
+    				}
+    			},
+    			error : function(rs){
+    				alert("错误-010 : 登录请求发送失败,请联系网站管理员.");
+    			}
+    		});
+    	});
+    });
+</script>
+<style type="text/css">
+    .mo {
+        width: 75px;
+        float: left;}
+    #main {
+        border: 1px #CCC solid;
+        border-radius: 5px;
+        margin: 200px auto;
+        width: 500px;
+        height: 300px;
+        text-align: center;}
+    #loginBox {
+        margin: 0 auto;}
+    table {
+        margin: 100px auto;}
+    h1 {
+        margin-top: 0;}
+</style>
+</head>
+<body>
+    <div id="page">
+        <header></header>
+        <div id="main">
+            <div id="loginBox">
+                <h1><font size="5em">Login</font></h1>
+	            <table>
+	                <tr>
+	                    <td><div class="mo">用户名:</div><input id="empName" name="empName" type="text" placeholder="请输入用户名" /></td>
+	                </tr>
+	                <tr>
+	                    <td><div class="mo">密码:</div><input id="empPwd" name="empPwd" type="password" placeholder="请输入密码" /></td>
+	                </tr>
+	                <tr>
+	                    <td><input id="loginButton" type="button" value="login" /></td>
+	                </tr>
+	                <tr>
+	                    <td><font id="checkMessag" color="#F00"></font></td>
+	                </tr>
+	            </table>
+            </div>
+        </div>
+        <footer></footer>
+    </div>
+</body>
+</html>

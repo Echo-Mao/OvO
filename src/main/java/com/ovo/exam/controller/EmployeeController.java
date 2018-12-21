@@ -24,8 +24,8 @@ public class EmployeeController {
     public Map<String, Object> login(Employee loginInfo, HttpSession session){
         Map<String, Object> json = new HashMap<>();
         System.out.println(loginInfo);
+        loginInfo = soe.login(loginInfo);
         if (loginInfo != null) {
-            loginInfo = soe.login(loginInfo);
             session.setAttribute("loginInfo", loginInfo);
             json.put("message", true);
         } else {

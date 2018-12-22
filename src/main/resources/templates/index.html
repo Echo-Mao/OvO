@@ -90,13 +90,14 @@ table {
 #logOut {
     float: right;}
 #page {
+    text-align: center;
     width: 1000px;
     margin: 0 auto;}
 </style>
 </head>
 <body>
     <div id="page">
-        <header></header>
+        <header><h1>==仙肝烧酒考勤信息管理系统==</h1></header>
         <div id="main">
             <div align="center">
                 <p>欢迎
@@ -130,7 +131,8 @@ table {
                         <td>职员姓名</td>
                         <td>考勤状态</td>
                         <td>所属部门</td>
-                        <td>记录时间</td>
+                        <td>考勤登记时间</td>
+                        <td>最后修改时间</td>
                         <td class="hid" th:style="${session.loginInfo.power == 1} ? 'display:table-cell;' : 'display:none;'">操作</td>
                     </tr>
                     <tr th:each="info : ${infos}">
@@ -138,6 +140,7 @@ table {
                         <td th:text="*{info.employee.empName}">职员姓名</td>
                         <td th:text="*{info.attendStatus.status}">考勤状态</td>
                         <td th:text="*{info.employee.department.deptName}">所属部门</td>
+                        <td th:text="*{#dates.format(info.recordTime,'yyyy-MM-dd HH:mm:ss')}">记录时间</td>
                         <td th:text="*{#dates.format(info.updateTime,'yyyy-MM-dd HH:mm:ss')}">记录时间</td>
                         <td class="hid" th:style="${session.loginInfo.power == 1} ? 'display:table-cell;' : 'display:none;'">
                             <a th:href="@{'/toUpdateStatus.action?attendInfoId='+*{info.attendInfoId}}">修改</a>

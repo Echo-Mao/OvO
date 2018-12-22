@@ -1,11 +1,15 @@
 package com.ovo.exam.entity;
 
+import java.io.Serializable;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public class Department {
+public class Department implements Serializable {
+
+    private static final long serialVersionUID = -8128434318452388103L;
 
     private Integer deptId; // 部门编号
     private String deptName;// 部门名称

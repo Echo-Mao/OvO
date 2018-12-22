@@ -1,5 +1,6 @@
 package com.ovo.exam.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.springframework.context.annotation.Scope;
@@ -8,7 +9,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public class AttendanceInfo {
+public class AttendanceInfo implements Serializable {
+
+    private static final long serialVersionUID = -1491235948022779043L;
 
     private Integer attendInfoId; // 考勤信息编号
     private Integer empId; // 员工编号

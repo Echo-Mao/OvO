@@ -1,11 +1,15 @@
 package com.ovo.exam.entity;
 
+import java.io.Serializable;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public class Employee {
+public class Employee implements Serializable {
+
+    private static final long serialVersionUID = -7729987059715635006L;
 
     private Integer empId; // 职员编号
     private String empName; // 职员姓名
